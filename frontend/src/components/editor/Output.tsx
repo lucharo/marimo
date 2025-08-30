@@ -42,8 +42,8 @@ import { CsvViewer } from "./file-tree/renderers";
 import { MarimoTracebackOutput } from "./output/MarimoTracebackOutput";
 import { renderMimeIcon } from "./renderMimeIcon";
 
-const LazyVegaLite = React.lazy(() =>
-  import("react-vega").then((m) => ({ default: m.VegaLite })),
+const LazyVegaEmbed = React.lazy(() =>
+  import("react-vega").then((m) => ({ default: m.VegaEmbed })),
 );
 
 type MimeBundle = Record<OutputMessage["mimetype"], { [key: string]: unknown }>;
@@ -171,9 +171,12 @@ export const OutputRenderer: React.FC<{
     case "application/vnd.vega.v5+json":
       return (
         <Suspense fallback={<ChartLoadingState />}>
-          <LazyVegaLite
+          <LazyVegaEmbed
             spec={parsedJsonData as TopLevelFacetedUnitSpec}
-            theme={theme === "dark" ? "dark" : undefined}
+            options={{
+              theme: theme === "dark" ? "dark" : "vox",
+              mode: "vega",
+            }}
           />
         </Suspense>
       );

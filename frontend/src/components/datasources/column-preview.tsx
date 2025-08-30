@@ -29,8 +29,8 @@ import { ColumnPreviewContainer } from "./components";
 import { InstallPackageButton } from "./install-package-button";
 import { convertStatsName, sqlCode } from "./utils";
 
-const LazyVegaLite = React.lazy(() =>
-  import("react-vega").then((m) => ({ default: m.VegaLite })),
+const LazyVegaEmbed = React.lazy(() =>
+  import("react-vega").then((m) => ({ default: m.VegaEmbed })),
 );
 
 export const DatasetColumnPreview: React.FC<{
@@ -221,12 +221,15 @@ export function renderChart(chartSpec: string, theme: Theme) {
 
   return (
     <Suspense fallback={LoadingChart}>
-      <LazyVegaLite
+      <LazyVegaEmbed
         spec={updateSpec(JSON.parse(chartSpec) as TopLevelFacetedUnitSpec)}
-        width={"container" as unknown as number}
-        height={100}
-        actions={false}
-        theme={theme === "dark" ? "dark" : "vox"}
+        options={{
+          theme: theme === "dark" ? "dark" : "vox",
+          height: 100,
+          width: "container" as unknown as number,
+          actions: false,
+          mode: "vega",
+        }}
       />
     </Suspense>
   );

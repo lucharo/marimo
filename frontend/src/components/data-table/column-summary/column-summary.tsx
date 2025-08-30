@@ -18,8 +18,8 @@ interface Props<TData, TValue> {
   columnId: string;
 }
 
-const LazyVegaLite = React.lazy(() =>
-  import("react-vega").then((m) => ({ default: m.VegaLite })),
+const LazyVegaEmbed = React.lazy(() =>
+  import("react-vega").then((m) => ({ default: m.VegaEmbed })),
 );
 
 // We batch multiple calls to the same URL returning the same promise
@@ -43,16 +43,19 @@ export const TableColumnSummary = <TData, TValue>({
         fallback={skeleton}
       >
         <Suspense fallback={skeleton}>
-          <LazyVegaLite
+          <LazyVegaEmbed
             spec={spec}
-            width={70}
-            height={30}
-            renderer="svg"
-            // @ts-expect-error - Our `loader.load` method is broader than VegaLite's typings but is functionally supported.
-            loader={batchedLoader}
+            options={{
+              width: 70,
+              height: 30,
+              renderer: "svg",
+              actions: false,
+              theme: theme === "dark" ? "dark" : "vox",
+              // @ts-expect-error - Our `loader.load` method is broader than VegaLite's typings but is functionally supported.
+              loader: batchedLoader,
+              mode: "vega-lite",
+            }}
             style={{ minWidth: "unset", maxHeight: "40px" }}
-            actions={false}
-            theme={theme === "dark" ? "dark" : "vox"}
           />
         </Suspense>
       </DelayMount>
