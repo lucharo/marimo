@@ -2,14 +2,11 @@
 
 import React from "react";
 import type { TopLevelSpec } from "vega-lite";
+import { LazyVegaEmbed } from "@/components/charts/lazy";
 import { useTheme } from "@/theme/useTheme";
 import type { ErrorMessage } from "./chart-spec/spec";
 import { augmentSpecWithData } from "./chart-spec/spec";
 import { ChartInfoState } from "./components/chart-states";
-
-const LazyVegaEmbed = React.lazy(() =>
-  import("react-vega").then((m) => ({ default: m.VegaEmbed })),
-);
 
 export const LazyChart: React.FC<{
   baseSpec: TopLevelSpec | ErrorMessage;

@@ -20,6 +20,7 @@ import type { TopLevelFacetedUnitSpec } from "@/plugins/impl/data-explorer/queri
 import { type Theme, useTheme } from "@/theme/useTheme";
 import { Events } from "@/utils/events";
 import { prettyNumber } from "@/utils/numbers";
+import { LazyVegaEmbed } from "../charts/lazy";
 import type { ColumnHeaderStatsKey } from "../data-table/types";
 import { CopyClipboardIcon } from "../icons/copy-icon";
 import { Spinner } from "../icons/spinner";
@@ -28,10 +29,6 @@ import { Tooltip } from "../ui/tooltip";
 import { ColumnPreviewContainer } from "./components";
 import { InstallPackageButton } from "./install-package-button";
 import { convertStatsName, sqlCode } from "./utils";
-
-const LazyVegaEmbed = React.lazy(() =>
-  import("react-vega").then((m) => ({ default: m.VegaEmbed })),
-);
 
 export const DatasetColumnPreview: React.FC<{
   table: DataTable;

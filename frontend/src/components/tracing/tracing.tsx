@@ -13,7 +13,7 @@ import {
 import React, { type JSX, Suspense, useEffect, useRef, useState } from "react";
 import { useVegaEmbed } from "react-vega";
 import useResizeObserver from "use-resize-observer";
-import type { SignalListenerHandler, Spec } from "vega";
+import type { Spec } from "vega";
 import { compile } from "vega-lite";
 import { Tooltip } from "@/components/ui/tooltip";
 import { useCellIds } from "@/core/cells/cells";
@@ -29,6 +29,7 @@ import {
 import { type ResolvedTheme, useTheme } from "@/theme/useTheme";
 import { cn } from "@/utils/cn";
 import { ClearButton } from "../buttons/clear-button";
+import type { SignalListener } from "../charts/types";
 import { ElapsedTime, formatElapsedTime } from "../editor/cell/CellStatus";
 import { PanelEmptyState } from "../editor/chrome/panels/empty-state";
 import { CellLink } from "../editor/links/cell-link";
@@ -107,11 +108,6 @@ export const Tracing: React.FC = () => {
     </div>
   );
 };
-
-interface SignalListener {
-  signalName: string;
-  handler: SignalListenerHandler;
-}
 
 interface ChartProps {
   className?: string;

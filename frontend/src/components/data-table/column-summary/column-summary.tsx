@@ -18,10 +18,6 @@ interface Props<TData, TValue> {
   columnId: string;
 }
 
-const LazyVegaEmbed = React.lazy(() =>
-  import("react-vega").then((m) => ({ default: m.VegaEmbed })),
-);
-
 // We batch multiple calls to the same URL returning the same promise
 // for all calls with the same key.
 const batchedLoader = createBatchedLoader();
