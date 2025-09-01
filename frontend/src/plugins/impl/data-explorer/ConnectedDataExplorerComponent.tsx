@@ -5,6 +5,7 @@ import { createStore, Provider, useAtomValue } from "jotai";
 import { ListFilterIcon } from "lucide-react";
 import React, { type JSX, useMemo } from "react";
 import { VegaEmbed, type VegaEmbedProps } from "react-vega";
+import type { TopLevelSpec } from "vega-lite";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -116,7 +117,6 @@ export const DataExplorerComponent = ({
   if (!data) {
     return <div />;
   }
-  // TODO: Use the chartData to augment the spec
   const { chartData, schema } = data;
   if (isPending || !schema) {
     return <div />;
@@ -132,13 +132,13 @@ export const DataExplorerComponent = ({
       return <ColumnSummary schema={schema} />;
     }
 
+    const spec = mainPlot.spec;
+    const responsiveSpec = makeResponsive(spec);
+    const augmentedSpec = augmentSpecWithData(responsiveSpec, chartData);
+
     return (
       <div className="flex overflow-y-auto justify-center items-center flex-1 w-[90%]">
-        <VegaEmbed
-          // data={{ source: chartData }}
-          spec={makeResponsive(mainPlot.spec)}
-          options={chartOptions(theme)}
-        />
+        <VegaEmbed spec={augmentedSpec} options={chartOptions(theme)} />
       </div>
     );
   };
@@ -256,7 +256,7 @@ const HorizontalCarouselItem = ({
 };
 // Make the plot responsive
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function makeResponsive(spec: any) {
+function makeResponsive(spec: any): TopLevelSpec {
   // NOTE: for row/column, this applies to the inner plot
   // so we tend to overflow due to the legends,
   // So for row/column, we skip the responsive spec
@@ -266,4 +266,11 @@ function makeResponsive(spec: any) {
     spec.width = "container";
   }
   return spec;
+}
+
+function augmentSpecWithData(spec: TopLevelSpec, data: object[]): TopLevelSpec {
+  return {
+    ...spec,
+    data: { values: data },
+  };
 }
