@@ -1,5 +1,6 @@
 /* Copyright 2024 Marimo. All rights reserved. */
 import React, { Suspense } from "react";
+import { LazyVegaEmbed } from "@/components/charts/lazy";
 import { createBatchedLoader } from "@/plugins/impl/vega/batched";
 import { useTheme } from "@/theme/useTheme";
 import { logNever } from "@/utils/assertNever";
